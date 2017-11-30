@@ -35,7 +35,7 @@ class DefaultController extends AbstractController
     {
         session_destroy();
         $user = $this->getUser();
-        return $this->renderer->render($response, 'login.phtml', ['Debug' => var_export($_POST), 'User'=> $user->orElse(null)]);
+        return $this->renderer->render($response, 'login.phtml', ['User' => $user->orElse(null)]);
     }
 
     /**

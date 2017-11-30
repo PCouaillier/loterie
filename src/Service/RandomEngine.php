@@ -8,7 +8,6 @@
 
 namespace App\Service;
 
-
 class RandomEngine implements IRollEngine
 {
     private $min;
@@ -20,6 +19,10 @@ class RandomEngine implements IRollEngine
         $this->max = $max;
     }
 
+    /**
+     * @return int
+     * @throws \Exception
+     */
     function roll(): int
     {
         return random_int($this->min, $this->max);

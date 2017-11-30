@@ -28,12 +28,14 @@ class SqliteDbCreator
             [
                 'username' => 'admin',
                 'mail' => 'admin@admin.admin',
+                'displayName' => 'admin',
                 'password' => password_hash('admin', PASSWORD_BCRYPT),
                 'canCreateRoom' => true
             ],
             [
                 'username' => 'test',
                 'mail' => 'test@test.test',
+                'displayName' => 'test',
                 'password' => password_hash('password', PASSWORD_BCRYPT),
                 'canCreateRoom' => false
             ]
@@ -48,10 +50,14 @@ class SqliteDbCreator
 
             foreach ($users as $user) {
                 $this->pdo
-                    ->prepare('INSERT INTO User (username, mail, password, canCreateRoom) VALUES (?, ?, ?, ?);')
-                    ->execute([$user['username'], $user['mail'], $user['password'], $user['canCreateRoom']]);
+                    ->prepare('INSERT INTO User (username, mail, displayName, password, canCreateRoom) VALUES (?, ?, ?, ?, ?);')
+                    ->execute([$user['username'], $user['mail'], $user['displayName'], $user['password'], $user['canCreateRoom']]);
             }
-            $adminId = intval($this->pdo->lastInsertId());
+
+            $st = $this->pdo->prepare('SELECT * FROM User WHERE username=?;');
+            $st->execute(['admin']);
+            $adminId = intval($st->fetch()['id']);
+
             $this->pdo->prepare('INSERT INTO `Room` (`engine`, `owner`, `begin`, `end`) VALUES (?, ?, ?, ?)')
                 ->execute([
                             'guillaumeengine',
@@ -59,10 +65,15 @@ class SqliteDbCreator
                             '2017-12-01 00:00:00',
                             '2017-12-25 00:00:00'
                         ]);
+
+            $st = $this->pdo->prepare('SELECT * FROM User WHERE username=?;');
+            $st->execute(['test']);
+            $testId = intval($st->fetch()['id']);
+
             $this->pdo->prepare('INSERT INTO `Room` (`engine`, `owner`, `begin`, `end`) VALUES (?, ?, ?, ?)')
                 ->execute([
                         'guillaumeengine',
-                        $adminId,
+                    $testId,
                         '2017-11-20 00:00:00',
                         '2017-12-20 00:00:00'
                 ]);

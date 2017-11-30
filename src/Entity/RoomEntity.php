@@ -41,6 +41,8 @@ class RoomEntity
         $this->id = $id;
         $this->owner = $owner;
         $this->engine = $engine;
+        $this->begin = $begin;
+        $this->end = $end;
     }
 
     public static function fromArray(array $room): RoomEntity
