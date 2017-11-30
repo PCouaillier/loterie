@@ -7,8 +7,28 @@
     <body>
         <h1>{{ owner.displayName }}'s Room</h1>
 
-        <form target="_self">
-
+        <form target="_self" method="POST">
+            <label>
+                <span>username</span>
+                <input name="username" type="text"/>
+            </label>
+            <br/>
+            <label>
+                <span>password</span>
+                <input name="password" type="password"/>
+            </label>
+            <br/>
+            <label>
+                <span>mail</span>
+                <input name="mail" type="email"/>
+            </label>
+            <br/>
+            <label>
+                <span>display name</span>
+                <input name="displayName" type="text"/>
+            </label>
+            <br/>
+            <input value="register" type="submit"/>
         </form>
     </body>
 </html>

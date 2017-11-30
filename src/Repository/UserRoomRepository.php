@@ -62,4 +62,15 @@ class UserRoomRepository extends AbstractRepository// extends EntityRepository
         $st->bindParam(':roomId', $roomId, PDO::PARAM_INT);
         $st->execute();
     }
+
+    public function getAccessibleRooms(UserEntity $user): array
+    {
+        $this->log->debug('user : '.$user->id);
+        $st = $this->db->prepare('SELECT Room.* FROM UserInRoom INNER JOIN Room ON UserInRoom.room=Room.id WHERE UserInRoom.user=:user;');
+        $st->bindParam(':user', $user->id, PDO::PARAM_INT);
+        $st->execute();
+        $rooms = $st->fetchAll();
+        $this->log->debug('rooms : '.var_export($rooms, true));
+        return array_map(function($a) { return RoomEntity::fromArray($a); }, $rooms);
+    }
 }

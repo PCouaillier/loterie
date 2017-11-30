@@ -38,7 +38,7 @@ class UserController extends AbstractController
             return $response->withStatus(404);
         }
         $room = $roomOptional->get();
-        $owner = $userRoomRepository->getRoomOwner($room);
+        $owner = $userRoomRepository->getRoomOwner($room->id);
 
         return $this->view->render($response, 'User/create.twig.html', ['owner' => $owner]);
     }
@@ -64,9 +64,13 @@ class UserController extends AbstractController
             return $response->withStatus(404);
         }
 
-        $userId = $userRepository->createUser(UserEntity::fromArray($_POST));
+        $userEntity = UserEntity::fromArray($_POST);
+        $userEntity->password = password_hash($userEntity->password, PASSWORD_BCRYPT);
+        $userEntity->id = $userRepository->createUser($userEntity);
 
-        $userRoomRepository->addUserToRoomByIds($userId, $roomId);
+        $_SESSION[USER_SESSION] = $userEntity;
+
+        $userRoomRepository->addUserToRoomByIds($userEntity->id, $roomId);
 
         return $response->withRedirect('/room/'.$roomId.'/roll');
     }

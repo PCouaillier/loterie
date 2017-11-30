@@ -10,6 +10,7 @@ namespace App\Controller;
 
 
 use App\Entity\UserEntity;
+use Interop\Container\Exception\ContainerException;
 use JJWare\Util\Optional;
 use Slim\Container;
 use Slim\Views\PhpRenderer;
@@ -26,6 +27,11 @@ abstract class AbstractController
     /** @var Twig */
     protected $view;
 
+    /**
+     * AbstractController constructor.
+     * @param Container $c
+     * @throws ContainerException
+     */
     public function __construct(Container $c)
     {
         $this->container = $c;

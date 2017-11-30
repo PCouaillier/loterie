@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 
+use App\Repository\UserRoomRepository;
 use Interop\Container\Exception\ContainerException;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
@@ -32,7 +33,7 @@ class DefaultController extends AbstractController
      */
     public function loginGet(Request $request, Response $response): ResponseInterface
     {
-        session_reset();
+        session_destroy();
         $user = $this->getUser();
         return $this->renderer->render($response, 'login.phtml', ['Debug' => var_export($_POST), 'User'=> $user->orElse(null)]);
     }
@@ -44,17 +45,26 @@ class DefaultController extends AbstractController
      */
     public function loginPost(Request $request, Response $response): ResponseInterface
     {
-        session_reset();
+        session_destroy();
+        session_start();
         if (!empty($_POST) && !empty($_POST['username'])) {
             /** @var \App\Repository\UserRepository $userRepository */
             $userRepository = $this->container->get('UserRepository');
 
-            $user = $userRepository ->findByCredential($_POST['username'], $_POST['password']);
+            $userOptional = $userRepository ->findByCredential($_POST['username'], $_POST['password']);
 
-            if ($user->isPresent()) {
-                $_SESSION[USER_SESSION] = $user->get();
-                $this->container->get('logger')->info('User connected : '.$user->get()->username);
-                return $response->withRedirect('/');
+            if ($userOptional->isPresent()) {
+                $user = $userOptional->get();
+                $_SESSION[USER_SESSION] = $user;
+                $this->container->get('logger')->info('User connected : '.$user->username);
+
+                /** @var UserRoomRepository $userRoomRepository */
+                $userRoomRepository = $this->container->get('UserRoomRepository');
+                $rooms = $userRoomRepository->getAccessibleRooms($user);
+                if (empty($rooms)) {
+                    return $response->withRedirect('/');
+                }
+                return $response->withRedirect('/room/'.$rooms[0]->id.'/roll');
             }
         }
         return $this->renderer->render($response, 'login.phtml', []);
