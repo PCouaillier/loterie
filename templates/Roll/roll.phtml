@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>Hey Santa!</title>
+    </head>
+    <body>
+        <h1><{{ owner.displayName }}'s Room</h1>
+        <ul>
+            <li>
+                <label>
+                    <span>Points</span>
+                    <input type="text" disabled="disabled" value="<?= ''/*$userPoints */?>">
+                </label>
+            </li>
+        </ul>
+        <form target="_self" method="POST">
+            <input type="submit" value="Roll NOW! <3">
+        </form>
+
+        {% if (isset($rollPoints) && $rollPoints!=null) %
+            <div>
+                <label>
+                    <span>You won</span>
+                    <input disabled="disabled" value="<?= $rollPoints ?>"/>
+                </label>
+            </div>
+        <% endif %>
+        <nav>
+            <div><h2>nav</h2></div>
+            <ul><a href="../../">HOME</a></ul>
+        </nav>
+    </body>
+</html>
