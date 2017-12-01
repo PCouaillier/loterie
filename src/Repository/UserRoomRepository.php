@@ -70,6 +70,6 @@ class UserRoomRepository extends AbstractRepository// extends EntityRepository
         $st->bindParam(':user', $user->id, PDO::PARAM_INT);
         $st->execute();
         $rooms = $st->fetchAll();
-        return array_map(function($a) { return RoomEntity::fromArray($a); }, $rooms);
+        return array_merge(array_map(function($a) { return RoomEntity::fromArray($a); }, $rooms), $this->getOwnedRooms($user->id));
     }
 }
