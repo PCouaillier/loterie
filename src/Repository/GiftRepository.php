@@ -11,6 +11,7 @@ namespace App\Repository;
 
 use App\Entity\GiftEntity;
 use App\Entity\RoomEntity;
+use JJWare\Util\Optional;
 
 class GiftRepository extends AbstractRepository
 {
@@ -35,5 +36,13 @@ class GiftRepository extends AbstractRepository
         $st = $this->db->prepare('INSERT INTO Gift (`name`, `cost`, `quantity`, `room`) VALUES (?, ?, ?, ?);');
         $st->execute([$gift->name, $gift->cost, $gift->quantity, $gift->room]);
         return intval($this->db->lastInsertId());
+    }
+
+    public function getGiftById(RoomEntity $room, int $giftId): Optional
+    {
+        $st = $this->db->prepare('SELECT * FROM Gift WHERE id=? AND room=?;');
+        $st->execute([$giftId, $room->id]);
+        $res = $st->fetch();
+        return $res ? Optional::of(GiftEntity::fromArray($res)) : Optional::empty();
     }
 }

@@ -88,6 +88,7 @@ class SqliteDbCreator
 
         $pdo->exec('CREATE TABLE IF NOT EXISTS `User` ( `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `username` TEXT NOT NULL UNIQUE, `mail` TEXT NOT NULL UNIQUE, `password` TEXT NOT NULL, `displayName` TEXT ,`canCreateRoom`	INTEGER NOT NULL DEFAULT 0);');
         $pdo->exec('CREATE TABLE IF NOT EXISTS `Room` ( `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `engine` TEXT NOT NULL, `owner` INTEGER NOT NULL, `begin` TEXT, `end` TEXT);');
+        $pdo->exec('CREATE TABLE IF NOT EXISTS `Transaction` ( `room` INTEGER NOT NULL, `user` INTEGER NOT NULL, `gift` INTEGER NOT NULL, `date` TEXT NOT NULL, `cost` INTEGER NOT NULL, PRIMARY KEY(`room`,`user`,`date`));');
         $pdo->exec('CREATE TABLE IF NOT EXISTS `UserInRoom` ( `user` INTEGER NOT NULL, `room` INTEGER NOT NULL, PRIMARY KEY(`user`,`room`) )');
         $pdo->exec('CREATE TABLE IF NOT EXISTS `UserRollInRoom` ( `user` INTEGER NOT NULL, `room` INTEGER NOT NULL, `date` TEXT NOT NULL, `points` INTEGER NOT NULL, PRIMARY KEY(`user`,`room`,`date`) )');
         $pdo->exec('CREATE TABLE IF NOT EXISTS `Gift` ( `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `cost` INTEGER NOT NULL, `quantity` INTEGER NOT NULL, `room` INTEGER NOT NULL )');

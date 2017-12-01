@@ -12,11 +12,24 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
 use Psr\Container\ContainerInterface;
+use Slim\Http\Response;
 use Slim\Views\PhpRenderer;
+use Slim\Views\Twig;
 
 define('USING_SQLITE', true);
 
 $container = $app->getContainer();
+
+
+$container['notFoundHandler'] = function ($c) {
+    return function ($request, $response) use ($c) {
+        /** @var Response $response */
+        $response = $c['response'];
+        /** @var Twig $view */
+        $view = $c['view'];
+        return $view->render($response->withStatus(404), 'Error/404.twig.html');
+    };
+};
 
 // view renderer
 $container['renderer'] = function (ContainerInterface $c) {
@@ -64,7 +77,7 @@ $container['Db'] = new class {
     }
 };
 
-$container['GiftsRepository'] = function (ContainerInterface $c) {
+$container['GiftRepository'] = function (ContainerInterface $c) {
     return new GiftRepository($c->get('Db'), $c->get('logger'));
 };
 
