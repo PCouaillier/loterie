@@ -3,32 +3,37 @@
     <head>
         <meta charset="utf-8"/>
         <title>Hey Santa!</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+        <link rel="stylesheet" href="/css/style.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     </head>
     <body>
-        <h1>{{ owner.displayName }}'s Room</h1>
+        <div class = "container">
+            <div class="wrapper">
+                <form  target="_self" method="POST" id="loginForm"  class="form-signin">
+                    <h3 class="form-signin-heading">{{ owner.displayName }}'s Room</h3>
+                    <img src="http://zezete2.z.e.pic.centerblog.net/7badf450.png" style=" height: 112px; ">
+                    <label>
+                        Login :
+                        <input type="text" class="form-control" name="username" placeholder="Username" required="" autofocus="" />
+                    </label>
+                    <label>
+                        Password :
+                        <input type="password" class="form-control" name="password" placeholder="Password" required=""/>
+                    </label>
+                    <label>
+                        Email :
+                        <input type="email" class="form-control" name="mail" placeholder="Username" required="" autofocus="" />
+                    </label>
+                    <label>
+                        Display name :
+                        <input type="text" class="form-control" name="displayName" placeholder="Username" required="" autofocus="" />
+                    </label>
 
-        <form target="_self" method="POST">
-            <label>
-                <span>username</span>
-                <input name="username" type="text"/>
-            </label>
-            <br/>
-            <label>
-                <span>password</span>
-                <input name="password" type="password"/>
-            </label>
-            <br/>
-            <label>
-                <span>mail</span>
-                <input name="mail" type="email"/>
-            </label>
-            <br/>
-            <label>
-                <span>display name</span>
-                <input name="displayName" type="text"/>
-            </label>
-            <br/>
-            <input value="register" type="submit"/>
-        </form>
+                    <button class="btn btn-lg btn-primary btn-block"  name="Submit" value="Login" type="Submit">Register</button><br>
+                </form>
+            </div>
+        </div>
     </body>
 </html>
