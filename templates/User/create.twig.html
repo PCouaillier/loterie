@@ -24,7 +24,7 @@
                     </label>
                     <label>
                         Email :
-                        <input type="email" class="form-control" name="mail" placeholder="Username" required="" autofocus="" />
+                        <input type="email" class="form-control" name="mail" placeholder="email" required="" autofocus="" />
                     </label>
                     <label>
                         Display name :
@@ -32,6 +32,9 @@
                     </label>
 
                     <button class="btn btn-lg btn-primary btn-block"  name="Submit" value="Login" type="Submit">Register</button><br>
+                    {% if errorMessage %}
+                    <div class="text-center col-xs-12">{{errorMessage}}</div>
+                    {% endif %}
                 </form>
             </div>
         </div>

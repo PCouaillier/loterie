@@ -51,7 +51,7 @@ class UserEntity
      */
     public $canAddRoom;
 
-    public function __construct($id, string $username, string $mail, string $password, string $displayName, bool $canAddRoom=false)
+    public function __construct(int $id, string $username, string $mail, string $password, string $displayName, bool $canAddRoom=false)
     {
         $this->id = $id;
         $this->username = $username;
@@ -63,6 +63,6 @@ class UserEntity
 
     public static function fromArray(array $array)
     {
-        return new UserEntity($array['id'], $array['username'], $array['mail'], $array['password'], $array['displayName']?? $array['username'], $array['canAddRoom'] ?? false);
+        return new UserEntity($array['id'] ?? 0, $array['username'], $array['mail'], $array['password'], $array['displayName']?? $array['username'], $array['canAddRoom'] ?? false);
     }
 }

@@ -40,7 +40,10 @@ class UserController extends AbstractController
         $room = $roomOptional->get();
         $owner = $userRoomRepository->getRoomOwner($room->id);
 
-        return $this->view->render($response, 'User/create.twig.html', ['owner' => $owner]);
+        return $this->view->render($response, 'User/create.twig.html', [
+            'owner' => $owner,
+            'errorMessage' => null
+        ]);
     }
 
     /**
@@ -64,9 +67,19 @@ class UserController extends AbstractController
             return $response->withStatus(404);
         }
 
-        $userEntity = UserEntity::fromArray($_POST);
-        $userEntity->password = password_hash($userEntity->password, PASSWORD_BCRYPT);
-        $userEntity->id = $userRepository->createUser($userEntity);
+
+        try {
+            $userEntity = UserEntity::fromArray($_POST);
+            $userEntity->password = password_hash($userEntity->password, PASSWORD_BCRYPT);
+            $userEntity->id = $userRepository->createUser($userEntity);
+        }
+        catch (\Exception $exception)
+        {
+            return $this->view->render($response, 'User/create.twig.html', [
+                'owner' => $userRoomRepository->getRoomOwner($roomId),
+                'errorMessage' => $exception->getMessage()
+            ]);
+        }
 
         $_SESSION[USER_SESSION] = $userEntity;
 
