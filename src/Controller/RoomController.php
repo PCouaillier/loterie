@@ -106,13 +106,13 @@ class RoomController extends AbstractController
         /** @var RoomEntity $room */
         $room = $roomOptional->get();
 
-        $engine = $engineFactory->engine($room->engine);
-
         $roomOwner = $userRepository->findById($room->owner)->get();
         return $this->view->render($response, 'Roll/roll.twig.html', [
                 'owner' => $roomOwner,
                 'balance' => $transactionService->getBalance($room, $user)->orElse(0),
-                'rollPoints' => null
+                'rolling'    => true,
+                'rollPoints' => null,
+                'alreadyRolled' => null
         ]);
     }
 
@@ -156,7 +156,7 @@ class RoomController extends AbstractController
             'owner'         => $roomOwner,
             'balance'       => $transactionService->getBalance($room, $user)->orElse(0),
             'rollPoints'    => $rollPoints->orElse(null),
-            'alreadyRolled' => $rollPoints->isPresent()
+            'alreadyRolled' => !$rollPoints->isPresent()
         ]);
     }
 }

@@ -14,9 +14,9 @@
                 <form  target="_self" method="POST" id="loginForm"  class="form-signin">
                     <h3 class="form-signin-heading">{{ owner.displayName }}'s Room</h3>
                     <img src="http://zezete2.z.e.pic.centerblog.net/7badf450.png" style=" height: 112px; ">
-                    <label>
+                    <label class="col-xs-12">
                         Points :
-                        <input class="form-control" type="text" disabled="disabled" value="{{ balance }}">
+                        <input class="form-control text-center col-xs-12" type="text" disabled="disabled" value="{{ balance }}">
                     </label>
                     <input class="btn btn-lg btn-primary btn-block" type="submit" value="Roll NOW! <3">
                     <hr>
@@ -30,9 +30,9 @@
                         {% elseif rollPoints == 5 %}
                             <img class="image-point" src="https://cdn.discordapp.com/attachments/367818236718350336/385903777632223244/5_flocons.jpg">
                         {% else %}
-                            <input  class="form-control"  disabled="disabled" value="{?= $rollPoints ?}"/>
+                            <input class="form-control"  disabled="disabled" value="{{ rollPoints }}" title=""/>
                         {% endif %}
-                    {% else %}
+                    {% elseif alreadyRolled %}
                         <center><p>Tu as déjà lancé le dès ajourd'hui</p></center>
                     {% endif %}
                     <!--
