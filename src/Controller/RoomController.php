@@ -48,10 +48,9 @@ class RoomController extends AbstractController
         /** @var UserEntity $user */
         $user = $this->getUser()->get();
         if ($user->canAddRoom) {
-            $a = $_POST;
-            $room = RoomEntity::fromArray($a);
+            $room = RoomEntity::fromArray($_POST);
+            // TODO: add Room
         }
-
         return $response->withRedirect('/room/'.$room->id);
     }
 
@@ -68,7 +67,11 @@ class RoomController extends AbstractController
 
         /** @var RoomRepository $roomRepository */
         $roomRepository = $this->container->get('RoomRepository');
-        $room = $roomRepository->getRoom($roomId)->get();
+        $roomOptional = $roomRepository->getRoom($roomId);
+        if ($roomOptional->isPresent() === false) {
+            return $this->container->get('notFoundHandler')($request, $response);
+        }
+        $room = $roomOptional->get();
 
         /** @var UserRepository $roomRepository */
         $userRepository = $this->container->get('UserRepository');
@@ -107,7 +110,7 @@ class RoomController extends AbstractController
         $room = $roomOptional->get();
 
         $roomOwner = $userRepository->findById($room->owner)->get();
-        return $this->view->render($response, 'Roll/roll.twig.html', [
+        return $this->view->render($response, 'Roll/roll.html.twig', [
                 'owner' => $roomOwner,
                 'balance' => $transactionService->getBalance($room, $user)->orElse(0),
                 'rolling'    => true,
@@ -152,7 +155,7 @@ class RoomController extends AbstractController
         $pointGenerator = new PointGenerator($pointsRepository, $engine);
         $rollPoints = $pointGenerator->userRollPoints($user, $room);
 
-        return $this->view->render($response, 'Roll/roll.twig.html', [
+        return $this->view->render($response, 'Roll/roll.html.twig', [
             'owner'         => $roomOwner,
             'balance'       => $transactionService->getBalance($room, $user)->orElse(0),
             'rollPoints'    => $rollPoints->orElse(null),

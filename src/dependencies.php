@@ -27,7 +27,7 @@ $container['notFoundHandler'] = function ($c) {
         $response = $c['response'];
         /** @var Twig $view */
         $view = $c['view'];
-        return $view->render($response->withStatus(404), 'Error/404.twig.html');
+        return $view->render($response->withStatus(404), 'Error/404.html.twig');
     };
 };
 

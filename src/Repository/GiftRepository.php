@@ -45,4 +45,11 @@ class GiftRepository extends AbstractRepository
         $res = $st->fetch();
         return $res ? Optional::of(GiftEntity::fromArray($res)) : Optional::empty();
     }
+
+    public function getGifts(int $roomId): array
+    {
+        $st = $this->db->prepare('SELECT * FROM Gift WHERE room=?');
+        $st->execute([$roomId]);
+        return array_walk($st->fetchAll(), function ($gift) { return GiftEntity::fromArray($gift); });
+    }
 }

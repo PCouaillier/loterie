@@ -21,7 +21,7 @@ $app->post('/login', function (Request $request, Response $response) {
 });
 
 $app->get('/room/{roomId}', function (Request $request, Response $response, $args) {
-    return (new RoomController($this))->getRoom($request, $response, $args['roomId']);
+    return (new RoomController($this))->getRoom($request, $response, intval($args['roomId']));
 })->add($redirectIfNotConnected);
 
 $app->get('/room/{roomId}/register', function (Request $request, Response $response, $args) {
@@ -38,6 +38,10 @@ $app->get('/room/{roomId}/roll', function (Request $request, Response $response,
 
 $app->post('/room/{roomId}/roll', function (Request $request, Response $response, $args) {
     return (new RoomController($this))->rollForRoomPost($request, $response, $args['roomId']);
+})->add($redirectIfNotConnected);
+
+$app->get('/room/{roomId}/gift/add', function (Request $request, Response $response, $args) {
+    return (new GiftController($this))->addGift($request, $response, intval($args['roomId']));
 })->add($redirectIfNotConnected);
 
 $app->get('/room/{roomId}/gift/{giftId}/buy', function (Request $request, Response $response, $args) {

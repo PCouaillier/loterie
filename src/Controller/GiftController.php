@@ -13,6 +13,7 @@ use App\Entity\GiftEntity;
 use App\Entity\UserEntity;
 use App\Repository\GiftRepository;
 use App\Repository\RoomRepository;
+use App\Repository\UserRoomRepository;
 use App\Service\TransactionService;
 use Exception;
 use Interop\Container\Exception\ContainerException;
@@ -26,15 +27,85 @@ class GiftController extends AbstractController
      * @param Request $request
      * @param Response $response
      * @param int $roomId
+     * @return ResponseInterface
+     * @throws ContainerException
+     */
+    public function getGifts(Request $request, Response $response, int $roomId): ResponseInterface
+    {
+        /** @var RoomRepository $roomRepository */
+        $roomRepository = $this->container->get('RoomRepository');
+        /** @var UserRoomRepository $userRoomRepository */
+        $userRoomRepository = $this->container->get('UserRoomRepository');
+        /** @var GiftRepository $giftRepository */
+        $giftRepository = $this->container->get('GiftRepository');
+
+        $roomOptional = $roomRepository->getRoom($roomId);
+        if ($roomOptional->isPresent() === false) {
+            return $this->container->get('notFoundHandler')($request, $response);
+        }
+        $room = $roomOptional->get();
+        $owner = $userRoomRepository->getRoomOwner($roomId);
+        return $this->view->render($response, 'Gift/gifts.html.twig', [
+            'owner' => $owner,
+            'room' => $room,
+            'gits' => $giftRepository->getGifts($roomId)
+        ]);
+
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param int $roomId
      * @return Response
      * @throws ContainerException
      */
     public function addGift(Request $request, Response $response, int $roomId): ResponseInterface
     {
+        /** @var RoomRepository $roomRepository */
+        $roomRepository = $this->container->get('RoomRepository');
+        /** @var UserRoomRepository $userRoomRepository */
+        $userRoomRepository = $this->container->get('UserRoomRepository');
+        $roomOptional = $roomRepository->getRoom($roomId);
+        if ($roomOptional->isPresent() === false) {
+            return $this->container->get('notFoundHandler')($request, $response);
+        }
+        $room = $roomOptional->get();
+        $owner = $userRoomRepository->getRoomOwner($roomId);
+        return $this->view->render($response, 'Gift/addGift.html.twig', [
+            'owner' => $owner,
+            'room' => $room
+        ]);
+    }
+
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param int $roomId
+     * @return ResponseInterface
+     * @throws ContainerException
+     */
+    public function addGiftPost(Request $request, Response $response, int $roomId): ResponseInterface
+    {
+        /** @var RoomRepository $roomRepository */
+        $roomRepository = $this->container->get('RoomRepository');
+        /** @var UserRoomRepository $userRoomRepository */
+        $userRoomRepository = $this->container->get('UserRoomRepository');
         /** @var GiftRepository $giftRepository */
         $giftRepository = $this->container->get('GiftRepository');
+
+        $roomOptional = $roomRepository->getRoom($roomId);
+        if ($roomOptional->isPresent() === false) {
+            return $this->container->get('notFoundHandler')($request, $response);
+        }
+        $room = $roomOptional->get();
         $giftRepository->addGiftWithRoomId($roomId, GiftEntity::fromArray($_POST));
-        return $this->renderer->render($response, 'Gift/AddGiftSuccess.phtml');
+        $owner = $userRoomRepository->getRoomOwner($roomId);
+        return $this->view->render($response, 'Gift/addGift.html.twig', [
+            'owner' => $owner,
+            'room' => $room
+        ]);
     }
 
     /**

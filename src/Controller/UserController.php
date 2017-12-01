@@ -40,7 +40,7 @@ class UserController extends AbstractController
         $room = $roomOptional->get();
         $owner = $userRoomRepository->getRoomOwner($room->id);
 
-        return $this->view->render($response, 'User/create.twig.html', [
+        return $this->view->render($response, 'User/create.html.twig', [
             'owner' => $owner,
             'errorMessage' => null
         ]);
@@ -75,7 +75,7 @@ class UserController extends AbstractController
         }
         catch (\Exception $exception)
         {
-            return $this->view->render($response, 'User/create.twig.html', [
+            return $this->view->render($response, 'User/create.html.twig', [
                 'owner' => $userRoomRepository->getRoomOwner($roomId),
                 'errorMessage' => $exception->getMessage()
             ]);

@@ -16,14 +16,11 @@ use PDO;
 
 class UserRoomRepository extends AbstractRepository// extends EntityRepository
 {
-    public function getRoom(int $id): Optional
-    {
-        return Optional::ofNullable(
-            $this
-                ->find($id));
-    }
-
-    public function getOwnedRooms(int $userId)
+    /**
+     * @param int $userId
+     * @return array RoomEntity[]
+     */
+    public function getOwnedRooms(int $userId): array
     {
         $st = $this->db->prepare('SELECT * FROM Room WHERE owner=:owner;');
         $st->bindParam(':owner', $userId, PDO::PARAM_INT);
@@ -32,6 +29,10 @@ class UserRoomRepository extends AbstractRepository// extends EntityRepository
         return array_map(function($room){return RoomEntity::fromArray($room); }, $rooms);
     }
 
+    /**
+     * @param int $roomId
+     * @return UserEntity|null
+     */
     public function getRoomOwner(int $roomId): ?UserEntity
     {
         $st = $this->db->prepare('SELECT User.* FROM `Room` INNER JOIN User ON Room.owner=User.id WHERE Room.id=:roomId');
@@ -41,14 +42,16 @@ class UserRoomRepository extends AbstractRepository// extends EntityRepository
         return $user ? UserEntity::fromArray($user) : null;
     }
 
-    private function find(int $roomId): ?UserEntity
+    /**
+     * @param int $roomId
+     * @return array UserEntity[]
+     */
+    private function findUsersInRoom(int $roomId): array
     {
         $st = $this->db->prepare('SELECT User.* FROM Room INNER JOIN UserInRoom ON UserInRoom.room=Room.id INNER JOIN User ON UserInRoom.user=User.id WHERE Room.id=?;');
         $st->execute([$roomId]);
-        if ($user = $st->fetch()) {
-            UserEntity::fromArray($user);
-        }
-        return null;
+        $users = $st->fetchAll();
+        return $users ? array_walk($users, function($user) { return UserEntity::fromArray($user); }) : [];
     }
 
     public function addUserToRoom(UserEntity $user, RoomEntity $room) {
