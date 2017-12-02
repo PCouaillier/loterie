@@ -8,7 +8,6 @@
 
 namespace App\Repository;
 
-
 use Monolog\Logger;
 
 abstract class AbstractRepository

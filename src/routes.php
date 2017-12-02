@@ -40,8 +40,16 @@ $app->post('/room/{roomId}/roll', function (Request $request, Response $response
     return (new RoomController($this))->rollForRoomPost($request, $response, $args['roomId']);
 })->add($redirectIfNotConnected);
 
+$app->get('/room/{roomId}/gift', function (Request $request, Response $response, $args) {
+    return (new GiftController($this))->getGifts($request, $response, intval($args['roomId']));
+})->add($redirectIfNotConnected);
+
 $app->get('/room/{roomId}/gift/add', function (Request $request, Response $response, $args) {
     return (new GiftController($this))->addGift($request, $response, intval($args['roomId']));
+})->add($redirectIfNotConnected);
+
+$app->post('/room/{roomId}/gift/add', function (Request $request, Response $response, $args) {
+    return (new GiftController($this))->addGiftPost($request, $response, intval($args['roomId']));
 })->add($redirectIfNotConnected);
 
 $app->get('/room/{roomId}/gift/{giftId}/buy', function (Request $request, Response $response, $args) {

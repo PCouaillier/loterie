@@ -23,7 +23,7 @@ class DefaultController extends AbstractController
      */
     public function index(Response $response): ResponseInterface
     {
-        return $this->renderer->render($response, 'index.phtml', []);
+        return $this->view->render($response, 'index.html.twig', []);
     }
 
     /**
@@ -35,7 +35,7 @@ class DefaultController extends AbstractController
     {
         session_destroy();
         $user = $this->getUser();
-        return $this->renderer->render($response, 'login.phtml', ['User' => $user->orElse(null)]);
+        return $this->view->render($response, 'login.html.twig', ['User' => $user->orElse(null)]);
     }
 
     /**
@@ -67,6 +67,6 @@ class DefaultController extends AbstractController
                 return $response->withRedirect('/room/'.$rooms[0]->id.'/roll');
             }
         }
-        return $this->renderer->render($response, 'login.phtml', []);
+        return $this->view->render($response, 'login.html.twig', []);
     }
 }

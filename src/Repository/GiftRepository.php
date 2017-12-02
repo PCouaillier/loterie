@@ -50,6 +50,7 @@ class GiftRepository extends AbstractRepository
     {
         $st = $this->db->prepare('SELECT * FROM Gift WHERE room=?');
         $st->execute([$roomId]);
-        return array_walk($st->fetchAll(), function ($gift) { return GiftEntity::fromArray($gift); });
+        $res = $st->fetchAll();
+        return array_map(function ($gift) { return GiftEntity::fromArray($gift); }, $res);
     }
 }

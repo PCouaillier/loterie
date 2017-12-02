@@ -1,0 +1,15 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+
+    <h1>add Room</h1>
+    <nav>
+        <ul><a href="../../">HOME</a></ul>
+    </nav>
+    <ul>
+        {% for room in rooms %}
+        <li>{{ room }}</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

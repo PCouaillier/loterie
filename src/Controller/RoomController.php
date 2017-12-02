@@ -35,12 +35,12 @@ class RoomController extends AbstractController
         /** @var \PDO $db */
         $db = $this->container->get('Db');
         $rooms = $db->query('SELECT * FROM `Room`;')->fetchAll();
-        return $this->renderer->render($response, 'Room/roomIndex.phtml', ['rooms' => $rooms]);
+        return $this->view->render($response, 'Room/roomIndex.html.twig', ['rooms' => $rooms]);
     }
 
     public function addRoomGet(Request $request, Response $response): ResponseInterface
     {
-        return $this->renderer->render($response, 'roomAdd.phtml');
+        return $this->view->render($response, 'roomAdd.html.twig');
     }
 
     public function addRoomPost(Request $request, Response $response): ResponseInterface
@@ -63,8 +63,6 @@ class RoomController extends AbstractController
      */
     public function getRoom(Request $request, Response $response, int $roomId): ResponseInterface
     {
-        $this->container->get('logger')->info("Controller::GetRoom roomId=$roomId");
-
         /** @var RoomRepository $roomRepository */
         $roomRepository = $this->container->get('RoomRepository');
         $roomOptional = $roomRepository->getRoom($roomId);
@@ -77,7 +75,7 @@ class RoomController extends AbstractController
         $userRepository = $this->container->get('UserRepository');
         $owner = $userRepository->findById($room->owner)->get();
 
-        return $this->renderer->render($response, 'Room/roomMenu.phtml', ['owner' => $owner]);
+        return $this->view->render($response, 'Room/roomMenu.html.twig', ['owner' => $owner]);
     }
 
     /**

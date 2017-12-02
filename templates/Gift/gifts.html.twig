@@ -1,13 +1,48 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
+
     <h1>Gifts</h1>
+
     <table>
         <thead>
-
+            <tr>
+                <th>
+                    id
+                </th>
+                <th>
+                    name
+                </th>
+                <th>
+                    quantity
+                </th>
+                <th>
+                    cost
+                </th>
+            </tr>
         </thead>
         <tbody>
 
+            {% for gift in gifts %}
+
+                <tr id="gift-{{ gift.id }}" data-id="{{ gift.id }}">
+                    <th>
+                        {{ gift.id }}
+                    </th>
+                    <td>
+                        {{ gift.name }}
+                    </td>
+                    <td>
+                        {{ gift.quantity }}
+                    </td>
+                    <td>
+                        {{ gift.cost }}
+                    </td>
+                </tr>
+
+            {%  endfor %}
+
         </tbody>
     </table>
+
 {% endblock %}

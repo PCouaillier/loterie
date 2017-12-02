@@ -20,21 +20,14 @@ define('USING_SQLITE', true);
 
 $container = $app->getContainer();
 
-
 $container['notFoundHandler'] = function ($c) {
     return function ($request, $response) use ($c) {
         /** @var Response $response */
         $response = $c['response'];
         /** @var Twig $view */
         $view = $c['view'];
-        return $view->render($response->withStatus(404), 'Error/404.html.twig');
+        return $view->render($response->withStatus(404), 'Error/404.html.twig')->withStatus(404);
     };
-};
-
-// view renderer
-$container['renderer'] = function (ContainerInterface $c) {
-    $settings = $c->get('settings')['renderer'];
-    return new PhpRenderer($settings['template_path']);
 };
 
 $container['view'] = function ($container) {

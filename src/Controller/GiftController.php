@@ -48,7 +48,7 @@ class GiftController extends AbstractController
         return $this->view->render($response, 'Gift/gifts.html.twig', [
             'owner' => $owner,
             'room' => $room,
-            'gits' => $giftRepository->getGifts($roomId)
+            'gifts' => $giftRepository->getGifts($roomId)
         ]);
 
     }
@@ -142,8 +142,12 @@ class GiftController extends AbstractController
         }
         $gift = $giftOptional->get();
 
-        $transactionService->addTransaction($room, $user, $gift);
-
-        return $response->write('Hello');
+        try {
+            $transactionService->addTransaction($room, $user, $gift);
+        }
+        catch (Exception $exception) {
+            return $response->write($exception->getMessage());
+        }
+        return $response->withRedirect('/room/'.$roomId.'/roll');
     }
 }

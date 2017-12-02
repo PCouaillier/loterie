@@ -11,7 +11,6 @@
     "require": {
         "php": ">=7.1.0",
         "slim/slim": "^3.1",
-        "slim/php-view": "^2.0",
         "monolog/monolog": "^1.17",
         "jjware/php-optional": "^1.0",
         "slim/twig-view": "^2.3"

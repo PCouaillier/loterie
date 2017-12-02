@@ -13,16 +13,12 @@ use App\Entity\UserEntity;
 use Interop\Container\Exception\ContainerException;
 use JJWare\Util\Optional;
 use Slim\Container;
-use Slim\Views\PhpRenderer;
 use Slim\Views\Twig;
 
 abstract class AbstractController
 {
     /** @var Container */
     protected $container;
-
-    /** @var PhpRenderer */
-    protected $renderer;
 
     /** @var Twig */
     protected $view;
@@ -35,7 +31,6 @@ abstract class AbstractController
     public function __construct(Container $c)
     {
         $this->container = $c;
-        $this->renderer = $c->get('renderer');
         $this->view = $c->get('view');
     }
 
