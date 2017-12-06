@@ -6,25 +6,25 @@
 
     <table>
         <thead>
-            <tr>
-                <th>
-                    id
-                </th>
-                <th>
-                    name
-                </th>
-                <th>
-                    quantity
-                </th>
-                <th>
-                    cost
-                </th>
-            </tr>
+        <!--<tr>
+            th>
+                id
+            </th>
+            <th>
+                name
+            </th>
+            <th>
+                quantity
+            </th>
+            <th>
+                cost
+            </th>
+        </tr>-->
         </thead>
         <tbody>
 
-            {% for gift in gifts %}
 
+                <!--
                 <tr id="gift-{{ gift.id }}" data-id="{{ gift.id }}">
                     <th>
                         {{ gift.id }}
@@ -38,9 +38,38 @@
                     <td>
                         {{ gift.cost }}
                     </td>
-                </tr>
+                </tr>-->
 
-            {%  endfor %}
+            <div class = "container">
+                <div class="wrapper">
+                    <div class="row justify-content-md-center">
+                        <div class="col col-md-12">
+                            {% for gift in gifts %}
+                            <form  target="_self" method="POST">
+                                <div class="panel panel-default  col col-md-3">
+                                    <h3 class="panel-body" name="name">Nom : {{ gift.name }}</h3>
+                                    <div class="panel -block">
+                                        <h4 class="panel -title" name="quantity">Quantitée : {{ gift.quantity }}</h4>
+                                        <p class="panel -text" name="cost">Prix : {{ gift.cost }}</p>
+                                        <input type="hidden" name="gitId" value="{{ gift.id }}">
+                                        <!--<a class="btn btn-lg btn-primary btn-block panel-footer" href="/room/{{ room.id }}/gift/{giftId}/buy"  value="byGift" type="Submit">Demander ce cadeau</a><br>-->
+                                        <button class="btn btn-lg btn-primary btn-block panel-footer" value="byGift" type="Submit">Demander ce cadeau</button><br>
+                                        {% if errorMessage %}
+                                            <div class="text-center col-xs-12">{{errorMessage}}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class=" col col-md-1">
+
+                                </div>
+                            </form>
+                            {%  endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
 
         </tbody>
     </table>

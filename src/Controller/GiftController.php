@@ -100,6 +100,7 @@ class GiftController extends AbstractController
             return $this->container->get('notFoundHandler')($request, $response);
         }
         $room = $roomOptional->get();
+        $_POST['room'] = $roomId;
         $giftRepository->addGiftWithRoomId($roomId, GiftEntity::fromArray($_POST));
         $owner = $userRoomRepository->getRoomOwner($roomId);
         return $this->view->render($response, 'Gift/addGift.html.twig', [

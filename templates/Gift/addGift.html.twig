@@ -2,10 +2,30 @@
 
 {% block body %}
 
-    <div>
-        <h1>
-            add gift
-        </h1>
+    <div class = "container">
+        <div class="wrapper">
+            <form  target="_self" method="POST" id="loginForm"  class="form-signin">
+                <h3 class="form-signin-heading">Add Gift</h3>
+                <img src="http://zezete2.z.e.pic.centerblog.net/7badf450.png" style=" height: 112px; ">
+                <label>
+                    Quantitée :
+                    <input type="text" class="form-control" name="quantity" placeholder="Quantitée" required="" autofocus="" />
+                </label>
+                <label>
+                    Prix :
+                    <input type="text" class="form-control" name="cost" placeholder="Prix" required=""/>
+                </label>
+                <label>
+                    Nom :
+                    <input type="text" class="form-control" name="name" placeholder="Nom" required="" autofocus="" />
+                </label>
+
+                <button class="btn btn-lg btn-primary btn-block"  name="Submit" value="addGift" type="Submit">Envoyer</button><br>
+                {% if errorMessage %}
+                    <div class="text-center col-xs-12">{{errorMessage}}</div>
+                {% endif %}
+            </form>
+        </div>
     </div>
 
 {% endblock %}
